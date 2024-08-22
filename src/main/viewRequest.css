@@ -1,0 +1,40 @@
+/* viewRequest.css */
+
+.view-request {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    padding: 2rem;
+  }
+  
+  .view-request-header {
+    background: #0072ff;
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .view-request-content {
+    padding: 2rem;
+    background: #f5f5f5;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 2rem auto;
+  }
+  
+  .view-request-content h2 {
+    margin-bottom: 0.5rem;
+    color: #0072ff;
+  }
+  
+  .view-request-content p {
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .view-request-footer {
+    background: #333;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+  

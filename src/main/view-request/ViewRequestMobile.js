@@ -1,12 +1,8 @@
-import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import './viewRequest.css';
+import '../viewRequest.css';
 
-// Lazy load components
-const ViewRequestPc = lazy(() => import('../main/view-request/ViewRequestPc'));
-const ViewRequestMobile = lazy(() => import('../main/view-request/ViewRequestMobile'));
-
-function ViewRequest() {
+function ViewRequestPc() {
   const { encodedData } = useParams();
   const [isYesClicked, setIsYesClicked] = useState(false);
   const [isNoClicked, setIsNoClicked] = useState(false);
@@ -80,40 +76,86 @@ function ViewRequest() {
     }
   }, [isNoClicked, cursorPosition, isMobile]);
 
+  
   const handleNoClick = (e) => {
     e.preventDefault();
     setIsNoClicked(true);
 
     const noButton = noButtonRef.current;
     if (noButton) {
-      noButton.style.transition = 'transform 0.1s ease-out';
-      noButton.style.transform = `translate(${Math.random() * 300}px, ${Math.random() * 300}px)`;
+      const buttonRect = noButton.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      // Original button position
+      const originalX = buttonRect.left;
+      const originalY = buttonRect.top;
+
+      // Random new position ensuring it's more than 100px away
+      let newX, newY;
+      do {
+        newX = Math.random() * (viewportWidth - buttonRect.width);
+        newY = Math.random() * (viewportHeight - buttonRect.height);
+      } while (Math.abs(newX - originalX) < 100 || Math.abs(newY - originalY) < 100);
+
+      // Apply new position
+      noButton.style.transition = 'transform 0.1s';
+      noButton.style.transform = `translate(${newX}px, ${newY}px)`;
 
       // Reset button position after a brief delay
       setTimeout(() => {
-        if (noButton) {
-          noButton.style.transition = 'transform 0.3s ease-in-out';
-          noButton.style.transform = 'translate(0, 0)';
-        }
-      }, 100); // Delay before returning to original position
+        noButton.style.transform = 'translate(0, 0)';
+      }, 1000); // Adjust this delay as needed
     }
   };
 
   return (
+    <div className="view-request">
+      <div className="view-request-box">
+        <header className="view-request-header">
+          <h1>{question}</h1>
+        </header>
 
-    
-        <Suspense fallback={<div>Loading...</div>}>
-          {isMobile ? (
-            <ViewRequestMobile
-            />
-          ) : (
-            <ViewRequestPc
-   
-            />
+        <section className="view-request-buttons">
+          {!isYesClicked &&  (
+            <>
+              <button
+                className="view-request-button yes-button"
+                onClick={() => setIsYesClicked(true)}
+              >
+                Yes
+              </button>
+              <button
+                className="view-request-button no-button"
+                ref={noButtonRef}
+                onClick={handleNoClick}
+              >
+                No
+              </button>
+            </>
           )}
-        </Suspense>
+        </section>
 
+        {isYesClicked && (
+          <section className="view-request-content">
+            <h2>Message</h2>
+            <p>{message}</p>
+          </section>
+        )}
+
+        <footer className="view-request-footer">
+          {isYesClicked ? (
+            <>
+              <p><a href="/">Create yours</a></p>
+              <p>&copy; {new Date().getFullYear()} Yes or No. All rights reserved.</p>
+            </>
+          ) : (
+            <p>Made by Zain</p>
+          )}
+        </footer>
+      </div>
+    </div>
   );
 }
 
-export default ViewRequest;
+export default ViewRequestPc;

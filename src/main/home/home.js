@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FaShareAlt, FaWhatsapp, FaClipboard, FaInstagram, FaGithub } from 'react-icons/fa';
 import Confetti from 'react-confetti';
 import './home.css';
 
@@ -7,78 +7,60 @@ function Home() {
   const [question, setQuestion] = useState('');
   const [message, setMessage] = useState('');
   const [requestCreated, setRequestCreated] = useState(false);
-  const [encodedUrl, setEncodedUrl] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const nav = useNavigate();
 
-  const encodeData = (data) => {
-    return encodeURIComponent(btoa(data));
-  };
+  const encodeData = (data) => encodeURIComponent(btoa(data));
 
   const handleCreateRequest = () => {
     if (question && message) {
-      const data = JSON.stringify({ question, message });
-      const encodedData = encodeData(data);
-      const url = `${window.location.origin}/view/${encodedData}`;
-      setEncodedUrl(url);
       setRequestCreated(true);
       setShowModal(true);
     }
   };
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(encodedUrl);
-    alert('Link copied to clipboard!');
+  const getLink = () => {
+    const data = JSON.stringify({ question, message });
+    const encodedData = encodeData(data);
+    return `${window.location.origin}/view/${encodedData}`;
   };
 
-  const handleShare = (platform) => {
-    const shareUrls = {
-      whatsapp: `https://wa.me/?text=${encodeURIComponent(encodedUrl)}`,
-      telegram: `https://t.me/share/url?url=${encodeURIComponent(encodedUrl)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(encodedUrl)}`,
-      twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(encodedUrl)}`,
-    };
-    window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(getLink())
+      .then(() => alert('Link copied to clipboard!'))
+      .catch(err => console.error('Error copying link: ', err));
+  };
+
+  const handleShareWhatsApp = () => {
+    const link = getLink();
+    const message = `Check out this request: ${link}`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  const handleShare = async () => {
+    const siteURL = getLink();
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'My Request',
+          text: 'Check out this request',
+          url: siteURL,
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      handleShareWhatsApp();
+    }
   };
 
   return (
     <div className="home">
-      {requestCreated && showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <Confetti />
-            <h2>Request Created Successfully!</h2>
-            <p>Share this link:</p>
-            <div className="modal-link">
-              <a href={encodedUrl} target="_blank" rel="noopener noreferrer">{encodedUrl}</a>
-              <button onClick={handleCopyLink}>Copy Link</button>
-            </div>
-            <div className="share-buttons">
-              <button onClick={() => handleShare('whatsapp')}>Share on WhatsApp</button>
-              <button onClick={() => handleShare('telegram')}>Share on Telegram</button>
-              <button onClick={() => handleShare('facebook')}>Share on Facebook</button>
-              <button onClick={() => handleShare('twitter')}>Share on Twitter</button>
-            </div>
-            <button className="close-button" onClick={() => setShowModal(false)}>Close</button>
-          </div>
-        </div>
-      )}
-      
       <header className="home-header">
-        <nav className="home-nav">
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#create">Create Request</a></li>
-            <li><a href="#footer">Contact</a></li>
-          </ul>
-        </nav>
-        <h1>Welcome to the Yes or No App</h1>
-        <p>Make your interactions more engaging with simple yes or no decisions.</p>
+        <h1>Yes or No App</h1>
+        <p>Create requests that only allow a "Yes" response!</p>
       </header>
-
       <section id="create" className="home-create">
-        <h2>Create a New Request</h2>
-        <p>Set up your request below and share it with others to get quick responses. Just fill out the details and click the button to create your request.</p>
+        <h2>Create Your Request</h2>
         <div className="create-form">
           <input
             type="text"
@@ -92,16 +74,67 @@ function Home() {
             onChange={(e) => setMessage(e.target.value)}
           />
           <button onClick={handleCreateRequest}>Create Request</button>
+          {requestCreated && (
+            <div className="success-message">
+              <p>Request created successfully!</p>
+              <p>Share this link:</p>
+              <a href={getLink()} target="_blank" rel="noopener noreferrer">
+                <p>Link here!</p>
+              </a>
+            </div>
+          )}
         </div>
       </section>
 
-      <footer id="footer" className="home-footer">
-        <p>Follow me on Instagram</p>
-        <a href="https://www.instagram.com/_syed_zain_ul" target="_blank" rel="noopener noreferrer" className="footer-link">
-          Follow me on Instagram @_syed_zain_ul
-        </a>
-        <p>&copy; {new Date().getFullYear()} Yes or No. All rights reserved.</p>
-      </footer>
+      {showModal && (
+        <div className="share-modal">
+          <button className="close-button" onClick={() => setShowModal(false)}>Close</button>
+          <Confetti />
+          <h2>Share Your Request</h2>
+          <div className="share-buttons">
+            <button onClick={handleShare}>
+              <FaShareAlt /> Share
+            </button>
+            <button onClick={handleShareWhatsApp}>
+              <FaWhatsapp /> WhatsApp
+            </button>
+            <button onClick={handleCopyLink}>
+              <FaClipboard /> Copy Link
+            </button>
+          </div>
+        </div>
+      )}
+
+      <section id="about" className="home-about">
+        <h2>About This App</h2>
+        <p>
+          This app allows you to create simple requests for others. Users can only respond with a "Yes" to these requests. 
+          If they click "Yes", they will receive a custom message you provide. The requests can be shared via link, WhatsApp, 
+          or copied to the clipboard for easy distribution.
+        </p>
+      </section>
+
+
+      <section id="faq" className="home-faq">
+        <h2>FAQ</h2>
+        <div className="faq-item">
+          <h3>How do I create a request?</h3>
+          <p>Fill out the form on the "Create Your Request" section with your question and message, then click "Create Request".</p>
+        </div>
+        <div className="faq-item">
+          <h3>Can I edit a request after creating it?</h3>
+          <p>Currently, once a request is created, it cannot be edited. You will need to create a new request.</p>
+        </div>
+      </section>
+
+      <section id="footer" className="home-footer">
+        <p>&copy; {new Date().getFullYear()} Yes or No App. All rights reserved.</p>
+        <div className="footer-social">
+          <a href="https://www.instagram.com/_syed_zain_ul" target="_blank" rel="noopener noreferrer">
+            <FaInstagram /> Follow me on Instagram
+          </a><br/>
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,40 +1,100 @@
-/* viewRequest.css */
-
+/* View Request Styles */
 .view-request {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    color: #333;
-    padding: 2rem;
-  }
-  
-  .view-request-header {
-    background: #0072ff;
-    color: white;
-    padding: 1.5rem;
-    text-align: center;
-  }
-  
-  .view-request-content {
-    padding: 2rem;
-    background: #f5f5f5;
-    border-radius: 8px;
-    max-width: 800px;
-    margin: 2rem auto;
-  }
-  
-  .view-request-content h2 {
-    margin-bottom: 0.5rem;
-    color: #0072ff;
-  }
-  
-  .view-request-content p {
-    margin-bottom: 1.5rem;
-    font-size: 1.2rem;
-  }
-  
-  .view-request-footer {
-    background: #333;
-    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     padding: 1rem;
+    box-sizing: border-box;
+    background: #f0f0f0; /* Light background to contrast the content */
+}
+
+.view-request-box {
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-  }
-  
+    box-sizing: border-box;
+}
+
+.view-request-header {
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.view-request-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.view-request-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.2s, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.yes-button {
+    background-color: #007aff;
+    color: #fff;
+}
+
+.yes-button:hover {
+    background-color: #0051a2;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.no-button {
+    background-color: #ff3b30;
+    color: #fff;
+}
+
+.view-request-content {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    color: #555;
+}
+
+.view-request-footer {
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    font-size: 0.875rem;
+    color: #333;
+}
+
+.view-request-footer a {
+    color: #007aff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.view-request-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .view-request {
+        padding: 0.5rem;
+    }
+
+    .view-request-box {
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .view-request-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+}

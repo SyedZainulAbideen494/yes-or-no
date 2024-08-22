@@ -1,12 +1,8 @@
-import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import './viewRequest.css';
+import '../viewRequest.css';
 
-// Lazy load components
-const ViewRequestPc = lazy(() => import('../main/view-request/ViewRequestPc'));
-const ViewRequestMobile = lazy(() => import('../main/view-request/ViewRequestMobile'));
-
-function ViewRequest() {
+function ViewRequestMobile() {
   const { encodedData } = useParams();
   const [isYesClicked, setIsYesClicked] = useState(false);
   const [isNoClicked, setIsNoClicked] = useState(false);
@@ -100,20 +96,52 @@ function ViewRequest() {
   };
 
   return (
+    <div className="view-request">
+      <div className="view-request-box">
+        <header className="view-request-header">
+          <h1>{question}</h1>
+        </header>
 
-    
-        <Suspense fallback={<div>Loading...</div>}>
-          {isMobile ? (
-            <ViewRequestMobile
-            />
-          ) : (
-            <ViewRequestPc
-   
-            />
+        <section className="view-request-buttons">
+          {!isYesClicked && !isNoClicked && (
+            <>
+              <button
+                className="view-request-button yes-button"
+                onClick={() => setIsYesClicked(true)}
+              >
+                Yes
+              </button>
+              <button
+                className="view-request-button no-button"
+                ref={noButtonRef}
+                onClick={handleNoClick}
+              >
+                No
+              </button>
+            </>
           )}
-        </Suspense>
+        </section>
 
+        {isYesClicked && (
+          <section className="view-request-content">
+            <h2>Message</h2>
+            <p>{message}</p>
+          </section>
+        )}
+
+        <footer className="view-request-footer">
+          {isYesClicked ? (
+            <>
+              <p><a href="/">Create yours</a></p>
+              <p>&copy; {new Date().getFullYear()} Yes or No. All rights reserved.</p>
+            </>
+          ) : (
+            <p>Made by Zain</p>
+          )}
+        </footer>
+      </div>
+    </div>
   );
 }
 
-export default ViewRequest;
+export default ViewRequestMobile;

@@ -108,30 +108,39 @@ body {
 .success-message p {
     margin: 0;
 }
-
 .share-modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Darker overlay */
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 50%;
+    background: rgba(0, 0, 0, 0.9); /* Slightly darker overlay */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: #fff;
     border-radius: 20px;
-    padding: 2rem; /* Padding around modal content */
+    padding: 2rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Add shadow for depth */
+    animation: fadeIn 0.5s ease-out; /* Add fade-in animation */
+    transform: translate(-50%, -50%); /* Centering the modal */
 }
 
 .share-modal h2 {
-    margin: 0 0 1rem;
-    font-size: 1.8rem; /* Increased font size */
+    margin: 0 0 1.5rem;
+    font-size: 2rem; /* Larger font size */
+    font-weight: bold; /* Bold text */
+}
+
+.share-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .share-buttons button {
-    background: #7161ef; /* Accent background color for share buttons */
+    background: #7161ef; /* Accent background color */
     border: none;
     color: #fff;
     padding: 0.75rem 1.5rem;
@@ -139,30 +148,59 @@ body {
     border-radius: 12px;
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform transition */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .share-buttons button:hover {
-    background: #5e50d1; /* Slightly darker shade for hover state */
+    background: #5e50d1; /* Darker shade for hover */
+    transform: translateY(-3px); /* Subtle lift effect on hover */
+}
+
+.share-buttons button:active {
+    transform: translateY(1px); /* Slightly pressed effect on click */
 }
 
 .share-modal .close-button {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: #e0e0e0; /* Light background for close button */
-    color: #000;
+    color: #ffffff;
     border: none;
-    border-radius: 50%;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.5rem; /* Adjusted width */
+    height: 2.5rem; /* Adjusted height */
+    background-color: transparent;
+    border-radius: 50%; /* Circular close button */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 1.2rem; /* Larger font size */
+    font-size: 1.4rem; /* Slightly larger font size */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.share-modal .close-button:hover {
+    background: rgba(255, 255, 255, 0.3); /* Light background on hover */
+    transform: scale(1.1); /* Slight scale-up effect on hover */
+}
+
+.share-modal .close-button:active {
+    transform: scale(1); /* Revert scale on click */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 .home-about h2, .home-faq h2 {
     margin-bottom: 1rem;
     font-size: 2.2rem; /* Increased font size */

@@ -89,7 +89,6 @@ function Home() {
       {showModal && (
         <div className="share-modal">
           <button className="close-button" onClick={() => setShowModal(false)}>Close</button>
-          <Confetti />
           <h2>Share Your Request</h2>
           <div className="share-buttons">
             <button onClick={handleShare}>

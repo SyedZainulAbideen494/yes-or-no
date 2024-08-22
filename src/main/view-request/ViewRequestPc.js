@@ -133,10 +133,10 @@ function ViewRequestMobile() {
           {isYesClicked ? (
             <>
               <p><a href="/">Create yours</a></p>
-              <p>&copy; {new Date().getFullYear()} Yes or No. All rights reserved.</p>
+             
             </>
           ) : (
-            <p>Made by Zain</p>
+            <p></p>
           )}
         </footer>
       </div>

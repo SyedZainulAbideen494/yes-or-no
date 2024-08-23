@@ -102,9 +102,6 @@ function Home() {
             <button onClick={handleShare}>
               <FaShareAlt /> Share
             </button>
-            <button onClick={handleShareWhatsApp}>
-              <FaWhatsapp /> WhatsApp
-            </button>
             <button onClick={handleCopyLink}>
               <FaClipboard /> Copy Link
             </button>

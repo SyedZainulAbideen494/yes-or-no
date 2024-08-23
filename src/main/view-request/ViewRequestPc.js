@@ -131,7 +131,7 @@ function ViewRequestMobile() {
 
         <footer className="view-request-footer">
           {isYesClicked && (
-            <p><a href="/">Create yours</a></p>
+            <p><a href="/">Create your own</a></p>
           )}
         </footer>
       </div>

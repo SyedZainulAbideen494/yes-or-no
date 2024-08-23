@@ -10,7 +10,7 @@ function Home() {
   const [showModal, setShowModal] = useState(false);
   const [confetti, setConfetti] = useState(false);
 
-  const encodeData = (data) => encodeURIComponent(btoa(data));
+  const encodeData = (data) => encodeURIComponent(btoa(unescape(encodeURIComponent(data))));
 
   const handleCreateRequest = () => {
     if (question && message) {

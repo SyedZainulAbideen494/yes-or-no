@@ -12,13 +12,12 @@ function ViewRequestMobile() {
 
   const decodeData = (data) => {
     try {
-      const decoded = atob(decodeURIComponent(data));
+      const decoded = decodeURIComponent(escape(atob(data)));
       return JSON.parse(decoded);
     } catch (error) {
       return { question: 'Invalid data', message: 'Unable to decode the request.' };
     }
   };
-
   const { question, message } = decodeData(encodedData);
 
   const handleMouseMove = (e) => {

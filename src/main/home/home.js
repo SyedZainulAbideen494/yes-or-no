@@ -78,7 +78,7 @@ function Home() {
             aria-label="Question input"
           />
           <textarea
-            placeholder="Enter the message to display after 'Yes'..."
+            placeholder="Enter the message to display after clicking 'Yes'"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             aria-label="Message input"

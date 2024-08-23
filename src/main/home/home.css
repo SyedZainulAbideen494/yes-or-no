@@ -108,6 +108,8 @@ body {
 .success-message p {
     margin: 0;
 }
+
+/* Share Modal Styles */
 .share-modal {
     position: fixed;
     top: 50%;
@@ -201,28 +203,32 @@ body {
         transform: scale(1);
     }
 }
-.home-about h2, .home-faq h2 {
-    margin-bottom: 1rem;
-    font-size: 2.2rem; /* Increased font size */
-    color: #e0e0e0; /* Lighter text color */
-}
 
+/* Footer Styles */
 .home-footer {
     background: #1c1c1c;
     color: #fff;
     padding: 1.5rem;
     border-radius: 20px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    text-align: center;
 }
 
 .footer-social a {
-    color: #e0e0e0; /* Lighter color for social links */
+    color: #fff;
     text-decoration: none;
-    font-size: 1.4rem; /* Larger font size for social links */
-    margin: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
     transition: color 0.3s ease;
 }
 
 .footer-social a:hover {
-    color: #ddd; /* Slightly lighter color for hover state */
+    color: #a38dff; /* Light accent color on hover */
+}
+
+.footer-social a svg {
+    margin-right: 0.5rem;
 }

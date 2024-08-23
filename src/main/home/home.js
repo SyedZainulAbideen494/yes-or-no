@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaShareAlt, FaWhatsapp, FaClipboard, FaInstagram, FaGithub } from 'react-icons/fa';
+import { FaShareAlt, FaWhatsapp, FaClipboard, FaInstagram } from 'react-icons/fa';
 import Confetti from 'react-confetti';
 import './home.css';
 
@@ -8,6 +8,7 @@ function Home() {
   const [message, setMessage] = useState('');
   const [requestCreated, setRequestCreated] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [confetti, setConfetti] = useState(false);
 
   const encodeData = (data) => encodeURIComponent(btoa(data));
 
@@ -15,6 +16,10 @@ function Home() {
     if (question && message) {
       setRequestCreated(true);
       setShowModal(true);
+      setConfetti(true); // Trigger confetti
+      setTimeout(() => setConfetti(false), 3000); // Stop confetti after 3 seconds
+    } else {
+      alert('Please fill out both fields before creating a request.');
     }
   };
 
@@ -55,6 +60,7 @@ function Home() {
 
   return (
     <div className="home">
+      {confetti && <Confetti />} {/* Render confetti when triggered */}
       <header className="home-header">
         <h1>Yes or No App</h1>
         <p>Create requests that only allow a "Yes" response!</p>
@@ -67,11 +73,13 @@ function Home() {
             placeholder="Enter your question here..."
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
+            aria-label="Question input"
           />
           <textarea
             placeholder="Enter the message to display after 'Yes'..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            aria-label="Message input"
           />
           <button onClick={handleCreateRequest}>Create Request</button>
           {requestCreated && (
@@ -87,7 +95,7 @@ function Home() {
       </section>
 
       {showModal && (
-        <div className="share-modal">
+        <div className="share-modal" onClick={() => setShowModal(false)}>
           <button className="close-button" onClick={() => setShowModal(false)}>Close</button>
           <h2>Share Your Request</h2>
           <div className="share-buttons">
@@ -113,12 +121,11 @@ function Home() {
         </p>
       </section>
 
-
       <section id="faq" className="home-faq">
         <h2>FAQ</h2>
         <div className="faq-item">
           <h3>How do I create a request?</h3>
-          <p>Fill out the form on the "Create Your Request" section with your question and message, then click "Create Request".</p>
+          <p>Fill out the form in the "Create Your Request" section with your question and message, then click "Create Request".</p>
         </div>
         <div className="faq-item">
           <h3>Can I edit a request after creating it?</h3>

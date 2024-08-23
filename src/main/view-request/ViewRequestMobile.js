@@ -76,7 +76,6 @@ function ViewRequestPc() {
     }
   }, [isNoClicked, cursorPosition, isMobile]);
 
-  
   const handleNoClick = (e) => {
     e.preventDefault();
     setIsNoClicked(true);
@@ -112,12 +111,14 @@ function ViewRequestPc() {
   return (
     <div className="view-request">
       <div className="view-request-box">
-        <header className="view-request-header">
-          <h1>{question}</h1>
-        </header>
+        {!isYesClicked && (
+          <header className="view-request-header">
+            <h1>{question}</h1>
+          </header>
+        )}
 
         <section className="view-request-buttons">
-          {!isYesClicked &&  (
+          {!isYesClicked && (
             <>
               <button
                 className="view-request-button yes-button"
@@ -147,7 +148,6 @@ function ViewRequestPc() {
           {isYesClicked ? (
             <>
               <p><a href="/">Create yours</a></p>
-     
             </>
           ) : (
             <p></p>

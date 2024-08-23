@@ -99,7 +99,7 @@ function ViewRequestMobile() {
     <div className="view-request">
       <div className="view-request-box">
         <header className="view-request-header">
-          <h1>{question}</h1>
+          {!isYesClicked && <h1>{question}</h1>}
         </header>
 
         <section className="view-request-buttons">
@@ -130,13 +130,8 @@ function ViewRequestMobile() {
         )}
 
         <footer className="view-request-footer">
-          {isYesClicked ? (
-            <>
-              <p><a href="/">Create yours</a></p>
-             
-            </>
-          ) : (
-            <p></p>
+          {isYesClicked && (
+            <p><a href="/">Create yours</a></p>
           )}
         </footer>
       </div>

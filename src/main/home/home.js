@@ -37,7 +37,7 @@ function Home() {
 
   const handleShareWhatsApp = () => {
     const link = getLink();
-    const message = `Check out this request: ${link}`;
+    const message = `${link}`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -46,8 +46,8 @@ function Home() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'My Request',
-          text: 'Check out this request',
+          title: '',
+          text: '',
           url: siteURL,
         });
       } catch (error) {

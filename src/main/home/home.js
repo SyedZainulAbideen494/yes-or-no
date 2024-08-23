@@ -152,9 +152,7 @@ function Home() {
           <a href="https://www.instagram.com/_syed_zain_ul" target="_blank" rel="noopener noreferrer">
             <FaInstagram /> Follow me on Instagram
           </a><br/>
-          <a href="https://www.instagram.com/_minhajahmed" target="_blank" rel="noopener noreferrer">
-            <FaInstagram /> Follow me on Instagram
-          </a><br/>
+
         </div>
       </section>
     </div>

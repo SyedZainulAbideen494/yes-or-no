@@ -15,11 +15,11 @@ function ViewRequestPc() {
       const decoded = decodeURIComponent(escape(atob(data)));
       return JSON.parse(decoded);
     } catch (error) {
-      return { question: 'Invalid data', message: 'Unable to decode the request.' };
+      return { question: 'Invalid data', message: 'Unable to decode the request.', yesButtonText: 'Yes', noButtonText: 'No' };
     }
   };
 
-  const { question, message } = decodeData(encodedData);
+  const { question, message, yesButtonText, noButtonText } = decodeData(encodedData);
 
   const handleMouseMove = (e) => {
     setCursorPosition({ x: e.clientX, y: e.clientY });
@@ -51,109 +51,58 @@ function ViewRequestPc() {
         const newY = buttonCenterY - moveDistance * Math.sin(angle);
 
         noButton.style.transform = `translate(${newX - buttonRect.left}px, ${newY - buttonRect.top}px)`;
+      } else {
+        noButton.style.transform = 'none';
       }
     }
   };
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
     };
+  }, [cursorPosition]);
 
-    if (!isNoClicked) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('touchmove', handleTouchMove);
-      const interval = setInterval(moveNoButtonAway, 20); // Faster interval for mobile
+  useEffect(() => {
+    moveNoButtonAway();
+  }, [cursorPosition]);
 
-      window.addEventListener('resize', handleResize);
+  const handleYesClick = () => {
+    setIsYesClicked(true);
+    setIsNoClicked(false);
+  };
 
-      return () => {
-        window.removeEventListener('mousemove', handleMouseMove);
-        window.removeEventListener('touchmove', handleTouchMove);
-        clearInterval(interval);
-        window.removeEventListener('resize', handleResize);
-      };
-    }
-  }, [isNoClicked, cursorPosition, isMobile]);
-
-  const handleNoClick = (e) => {
-    e.preventDefault();
+  const handleNoClick = () => {
     setIsNoClicked(true);
-
-    const noButton = noButtonRef.current;
-    if (noButton) {
-      const buttonRect = noButton.getBoundingClientRect();
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-
-      // Original button position
-      const originalX = buttonRect.left;
-      const originalY = buttonRect.top;
-
-      // Random new position ensuring it's more than 100px away
-      let newX, newY;
-      do {
-        newX = Math.random() * (viewportWidth - buttonRect.width);
-        newY = Math.random() * (viewportHeight - buttonRect.height);
-      } while (Math.abs(newX - originalX) < 100 || Math.abs(newY - originalY) < 100);
-
-      // Apply new position
-      noButton.style.transition = 'transform 0.1s';
-      noButton.style.transform = `translate(${newX}px, ${newY}px)`;
-
-      // Reset button position after a brief delay
-      setTimeout(() => {
-        noButton.style.transform = 'translate(0, 0)';
-      }, 1000); // Adjust this delay as needed
-    }
+    setIsYesClicked(false);
   };
 
   return (
     <div className="view-request">
-      <div className="view-request-box">
-        {!isYesClicked && (
-          <header className="view-request-header">
-            <h1>{question}</h1>
-          </header>
-        )}
-
-        <section className="view-request-buttons">
-          {!isYesClicked && (
-            <>
-              <button
-                className="view-request-button yes-button"
-                onClick={() => setIsYesClicked(true)}
-              >
-                Yes
-              </button>
-              <button
-                className="view-request-button no-button"
-                ref={noButtonRef}
-                onClick={handleNoClick}
-              >
-                No
-              </button>
-            </>
-          )}
-        </section>
-
-        {isYesClicked && (
-          <section className="view-request-content">
-            <h2>Message</h2>
-            <p>{message}</p>
-          </section>
-        )}
-
-        <footer className="view-request-footer">
-          {isYesClicked ? (
-            <>
-              <p><a href="/">Create yours</a></p>
-            </>
-          ) : (
-            <p></p>
-          )}
-        </footer>
-      </div>
+      <header className="view-request-header">
+        <h1>View Your Request</h1>
+      </header>
+      <section className="view-request-content">
+        <h2>{question}</h2>
+        <div className="view-request-buttons">
+          <button className={`yes-button ${isYesClicked ? 'clicked' : ''}`} onClick={handleYesClick}>
+            {yesButtonText || 'Yes'}
+          </button>
+          <button
+            ref={noButtonRef}
+            className={`no-button ${isNoClicked ? 'clicked' : ''}`}
+            onClick={handleNoClick}
+          >
+            {noButtonText || 'No'}
+          </button>
+        </div>
+        {isYesClicked && <p className="message">{message}</p>}
+        {isNoClicked && <p className="message">You clicked No.</p>}
+      </section>
     </div>
   );
 }

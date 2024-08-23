@@ -6,6 +6,8 @@ import './home.css';
 function Home() {
   const [question, setQuestion] = useState('');
   const [message, setMessage] = useState('');
+  const [yesButtonText, setYesButtonText] = useState('Yes');
+  const [noButtonText, setNoButtonText] = useState('No');
   const [requestCreated, setRequestCreated] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [confetti, setConfetti] = useState(false);
@@ -19,12 +21,12 @@ function Home() {
       setConfetti(true); // Trigger confetti
       setTimeout(() => setConfetti(false), 3000); // Stop confetti after 3 seconds
     } else {
-      alert('Please fill out both fields before creating a request.');
+      alert('Please fill out all fields before creating a request.');
     }
   };
 
   const getLink = () => {
-    const data = JSON.stringify({ question, message });
+    const data = JSON.stringify({ question, message, yesButtonText, noButtonText });
     const encodedData = encodeData(data);
     return `${window.location.origin}/view/${encodedData}`;
   };
@@ -80,6 +82,20 @@ function Home() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             aria-label="Message input"
+          />
+          <input
+            type="text"
+            placeholder="Enter text for 'Yes' button (optional)"
+            value={yesButtonText}
+            onChange={(e) => setYesButtonText(e.target.value)}
+            aria-label="Yes Button Text input"
+          />
+          <input
+            type="text"
+            placeholder="Enter text for 'No' button (optional)"
+            value={noButtonText}
+            onChange={(e) => setNoButtonText(e.target.value)}
+            aria-label="No Button Text input"
           />
           <button onClick={handleCreateRequest}>Create Request</button>
           {requestCreated && (

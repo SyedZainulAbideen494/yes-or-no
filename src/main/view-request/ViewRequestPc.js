@@ -15,10 +15,11 @@ function ViewRequestMobile() {
       const decoded = decodeURIComponent(escape(atob(data)));
       return JSON.parse(decoded);
     } catch (error) {
-      return { question: 'Invalid data', message: 'Unable to decode the request.' };
+      return { question: 'Invalid data', message: 'Unable to decode the request.', yesButtonText: 'Yes', noButtonText: 'No' };
     }
   };
-  const { question, message } = decodeData(encodedData);
+
+  const { question, message, yesButtonText, noButtonText } = decodeData(encodedData);
 
   const handleMouseMove = (e) => {
     setCursorPosition({ x: e.clientX, y: e.clientY });
@@ -108,14 +109,14 @@ function ViewRequestMobile() {
                 className="view-request-button yes-button"
                 onClick={() => setIsYesClicked(true)}
               >
-                Yes
+                {yesButtonText || 'Yes'}
               </button>
               <button
                 className="view-request-button no-button"
                 ref={noButtonRef}
                 onClick={handleNoClick}
               >
-                No
+                {noButtonText || 'No'}
               </button>
             </>
           )}

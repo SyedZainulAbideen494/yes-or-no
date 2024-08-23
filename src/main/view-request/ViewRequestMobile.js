@@ -83,27 +83,45 @@ function ViewRequestPc() {
 
   return (
     <div className="view-request">
+    <div className="view-request-box">
       <header className="view-request-header">
-        <h1>View Your Request</h1>
+        {!isYesClicked && <h1>{question}</h1>}
       </header>
-      <section className="view-request-content">
-        <h2>{question}</h2>
-        <div className="view-request-buttons">
-          <button className={`yes-button ${isYesClicked ? 'clicked' : ''}`} onClick={handleYesClick}>
-            {yesButtonText || 'Yes'}
-          </button>
-          <button
-            ref={noButtonRef}
-            className={`no-button ${isNoClicked ? 'clicked' : ''}`}
-            onClick={handleNoClick}
-          >
-            {noButtonText || 'No'}
-          </button>
-        </div>
-        {isYesClicked && <p className="message">{message}</p>}
-        {isNoClicked && <p className="message">You clicked No.</p>}
+
+      <section className="view-request-buttons">
+        {!isYesClicked && (
+          <>
+            <button
+              className="view-request-button yes-button"
+              onClick={() => setIsYesClicked(true)}
+            >
+              {yesButtonText || 'Yes'}
+            </button>
+            <button
+              className="view-request-button no-button"
+              ref={noButtonRef}
+              onClick={handleNoClick}
+            >
+              {noButtonText || 'No'}
+            </button>
+          </>
+        )}
       </section>
+
+      {isYesClicked && (
+        <section className="view-request-content">
+          <h2>Message</h2>
+          <p>{message}</p>
+        </section>
+      )}
+
+      <footer className="view-request-footer">
+        {isYesClicked && (
+          <p><a href="/">Create yours</a></p>
+        )}
+      </footer>
     </div>
+  </div>
   );
 }
 
